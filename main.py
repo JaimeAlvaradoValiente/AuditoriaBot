@@ -5,14 +5,21 @@ from telegram.ext import (Updater,
                           Filters)
 
 import constants, telegramCommands
+from luis import getIntent
  
 
 def telegramMessage(update, context):
     text_content = update.message.text
     userID = update.message.chat_id
 
-    #l = logicClass.logic()
-    response = "hola"
+    intent = getIntent(text_content)
+
+    if intent == 'HOLA':
+        response='Hola'
+    elif intent == 'ADIOS':
+        response='Adios'
+    else:
+        response='Lo siento, no puedo ayudarte con eso en este momento.'
 
     update.message.reply_text(response)
 
