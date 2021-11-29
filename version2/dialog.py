@@ -1,5 +1,6 @@
 from luis import getIntent
 import requests
+import constants
 
 def getResponse(query, step):
     response=''
@@ -15,7 +16,7 @@ def getResponse(query, step):
         response='Vamos a ver qué tiempo hace... Dime el código postal de la localidad que quieres consultar (Ej. 10002)'
         step=1
     elif intent == 'TIEMPO' and entity != None:
-        r=requests.get('https://api.openweathermap.org/data/2.5/weather?zip='+entity+',es&appid=ca6687d2eb91aabb6b418b7ea2d19b7d')
+        r=requests.get('https://api.openweathermap.org/data/2.5/weather?zip='+entity+',es&appid='+constants.OPENWEATHER_TOKEN)
         if r.status_code==200:
             temp = r.json()['main']['temp']
             response='La temperatura es de '+str(round(temp-273.5,1))+' grados Celsius'
@@ -23,7 +24,7 @@ def getResponse(query, step):
         else:
             response='El código postal introducido es erróneo. Vuelva a intentarlo.'
     elif step!=0 and intent=='ZIPCODE':
-        r=requests.get('https://api.openweathermap.org/data/2.5/weather?zip='+entity+',es&appid=ca6687d2eb91aabb6b418b7ea2d19b7d')
+        r=requests.get('https://api.openweathermap.org/data/2.5/weather?zip='+entity+',es&appid='+constants.OPENWEATHER_TOKEN)
         if r.status_code==200:
             temp = r.json()['main']['temp']
             response='La temperatura es de '+str(round(temp-273.5,1))+' grados Celsius'
